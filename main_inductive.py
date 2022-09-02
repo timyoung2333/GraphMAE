@@ -21,7 +21,7 @@ from graphmae.models import build_model
 from graphmae.evaluation import linear_probing_for_inductive_node_classiifcation, LogisticRegression
 
 
-def evaluete(model, loaders, num_classes, lr_f, weight_decay_f, max_epoch_f, device, linear_prob=True, mute=False):
+def evaluate(model, loaders, num_classes, lr_f, weight_decay_f, max_epoch_f, device, linear_prob=True, mute=False):
     model.eval()
     if linear_prob:
         if len(loaders[0]) > 1:
@@ -175,7 +175,7 @@ def pretrain(model, dataloaders, optimizer, max_epoch, device, scheduler, num_cl
             logger.note(loss_dict, step=epoch)
         
         if epoch == (max_epoch//2):
-            evaluete(model, (eval_train_loader, val_loader, test_loader), num_classes, lr_f, weight_decay_f, max_epoch_f, device, linear_prob, mute=True)
+            evaluate(model, (eval_train_loader, val_loader, test_loader), num_classes, lr_f, weight_decay_f, max_epoch_f, device, linear_prob, mute=True)
     return model
 
 
@@ -255,7 +255,7 @@ def main(args):
         model = model.to(device)
         model.eval()
 
-        final_acc, estp_acc = evaluete(model, (eval_train_dataloader, valid_dataloader, test_dataloader), num_classes, lr_f, weight_decay_f, max_epoch_f, device, linear_prob)
+        final_acc, estp_acc = evaluate(model, (eval_train_dataloader, valid_dataloader, test_dataloader), num_classes, lr_f, weight_decay_f, max_epoch_f, device, linear_prob)
         acc_list.append(final_acc)
         estp_acc_list.append(estp_acc)
 
